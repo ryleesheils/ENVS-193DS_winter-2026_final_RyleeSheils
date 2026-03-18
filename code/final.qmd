@@ -15,6 +15,8 @@ library(tidyverse)
 library(janitor)
 library(forcats)
 library(here)
+library(DHARMa)
+
 ```
 
 # Problem 1. Research writing
@@ -123,6 +125,8 @@ The figure shows that mean kelp fronds vary across both year and site. Isla Vist
 
 ## Set up 
 ```{r}
+#| message: false
+#| warning: false
 mopl <- read_csv(here("data", "MOPL_nest-site_selection_Duchardt_et_al._2019.csv"))
 ```
 
@@ -185,4 +189,119 @@ model4 <- glm(
   family = binomial
 )
 ```
+
+## e. 
+
+```{r}
+AIC(model1, model2, model3, model4)
+```
+
+The best model as determined by Akaike’s Information Criterion (AIC) was the model predicting Mountain Plover nest-site use from visual obstruction. This model had the lowest AIC value (331.769), so it provided the best fit among the candidate models while balancing model complexity.
+
+## f. 
+
+```{r}
+
+model2_sim <- simulateResiduals(fittedModel = model2)
+
+plot(model2_sim)
+```
+I checked the diagnostics for the selected logistic regression model using simulated DHARMa residuals. The diagnostic plots did not show any significant problems, and the formal tests suggested no evidence of poor residual fit, overdispersion, or unusual outliers. Overall, the model appears to meet the assumptions reasonably well.
+
+From the figure:
+
+KS test p = 0.72382 → no evidence the residual distribution is off
+
+Dispersion test p = 0.992 → no evidence of overdispersion
+
+Outlier test p = 1 → no evidence of problematic outliers
+
+the top-right panel also says “No significant problems detected"
+
+## g. 
+```{r}
+pred_data <- tibble(
+  vo_nest = seq(
+    from = min(mopl_clean$vo_nest, na.rm = TRUE),
+    to = max(mopl_clean$vo_nest, na.rm = TRUE),
+    length.out = 100
+  )
+)
+
+predictions <- predict(model2, newdata = pred_data, type = "link", se.fit = TRUE)
+
+pred_data <- pred_data |>
+  mutate(
+    fit_link = predictions$fit,
+    se_link = predictions$se.fit,
+    fit_prob = plogis(fit_link),
+    lower_ci = plogis(fit_link - 1.96 * se_link),
+    upper_ci = plogis(fit_link + 1.96 * se_link)
+  )
+```
+
+```{r}
+ggplot() +
+  geom_jitter(
+    data = mopl_clean,
+    aes(x = vo_nest, y = used_bin),
+    height = 0.03,
+    width = 0,
+    alpha = 0.4,
+    color = "#5B8A72"
+  ) +
+  geom_ribbon(
+    data = pred_data,
+    aes(x = vo_nest, ymin = lower_ci, ymax = upper_ci),
+    fill = "#A5C4B0",
+    alpha = 0.4
+  ) +
+  geom_line(
+    data = pred_data,
+    aes(x = vo_nest, y = fit_prob),
+    color = "#1F5A4A",
+    linewidth = 1.2
+  ) +
+  labs(
+    x = "Visual obstruction at nest",
+    y = "Predicted probability of Mountain Plover nest-site use"
+  ) +
+  theme_classic()
+```
+
+## h. 
+Figure 1. Predicted probability of Mountain Plover nest-site use as a function of visual obstruction at the nest. Points show the underlying binary nest-site use data (0 = available but unused site, 1 = used nest site), the solid line shows predicted probabilities from the selected logistic regression model, and the shaded band shows 95% confidence interval around the predictions. Data source: Duchardt, Courtney; Beck, Jeffrey; Augustine, David (2020). Data from: Mountain Plover habitat selection and nest survival in relation to weather variability and spatial attributes of Black-tailed Prairie Dog disturbance [Dataset]. Dryad.
+
+## i. 
+```{r}
+predict(
+  model2,
+  newdata = tibble(vo_nest = 0),
+  type = "response"
+)
+```
+At a visual obstruction value of 0, the predicted probability of Mountain Plover nest-site occupancy is 0.732. This means the model predicts about a 73.2% probability that a site with no visual obstruction would be used as a nest site.
+
+## j. 
+The results suggest that visual obstruction is an important predictor of Mountain Plover nest-site use. As visual obstruction increases, the predicted probability of nest-site use decreases, which suggests that Mountain Plovers are more likely to select open nesting areas with little visual blockage. This matches the ecological expectations from the paper, which describes Mountain Plovers as birds that prefer relatively flat areas with bare ground and sparse vegetation.
+
+# Problem 4. Affective and Exploratory Visualizations
+
+## a. Comparing Visualizations 
+
+### How are the visualizations different?
+My Homework 2 exploratory visualizations represented the data in a more standard statistical way, using separate plots to isolate one relationship at a time, like cloud cover and energy or temperature and energy. By contrast, my affective visualization turns the same daily observations into a hand-drawn flower garden, where each flower stands for one day and multiple variables are layered into the same symbol through stem height, petal number, color, leaves, and flower center.
+
+### Similarities 
+All of my visualizations are still based on the same personal daily data and focus on understanding what shapes my energy over time. Even though the style changes, they all keep energy as the main outcome and try to connect it to other daily conditions like cloud cover, sleep, and other factors that may influence how I feel.
+
+### Patterns 
+Across both the exploratory and affective visualizations, I see that energy seems to shift with weather and other daily conditions rather than staying constant. In Homework 2, I wrote that higher temperatures seemed to be associated with slightly higher energy levels and that cloud cover might also matter, while the flower visualization reinforces that energy is highest on some bright, open-feeling days but also shows that sleep, assignments, caffeine, and steps are happening at the same time. The patterns are not completely different, but the affective visualization makes the data feel more layered and personal because several variables are shown together. Something I did notice is that I tended to have very low energy levels on Friday's which is interesting as that is my final day of the week for assignments and school. 
+
+### Feedback 
+During week 9 workshop my group gave me the fantastic idea of visualizing my data through flowers. I implemented that process by making sure each flower feature had a clear meaning and that the final piece had a readable legend, consistent visual structure, and a clear connection between the timeline and the variables being represented. After presenting my visualization in week 10, it was clear that this was a solid choice as my peers said it was easy to follow yet displayed a lot of different variables of data. 
+
+## b. Designing Analysis
+
+
 
