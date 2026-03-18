@@ -120,6 +120,7 @@ The figure shows that mean kelp fronds vary across both year and site. Isla Vist
 
 # Problem 3. Data Analysis
 
+
 ## Set up 
 ```{r}
 mopl <- read_csv(here("data", "MOPL_nest-site_selection_Duchardt_et_al._2019.csv"))
@@ -132,3 +133,56 @@ In this data set, a value of 1 means the location was a nest site that was used 
 `vo_nest` is a continuous variable because it is measured numerically. As visual obstruction increases, the probability of Mountain Plover nest-site use would probably decrease because plovers tend to choose open nesting habitat with shorter and less dense vegetation. I found this in the Introduction where the paper says Mountain Plovers typically breed in areas with extensive bare ground and short, sparse vegetation, and in the Nest-Site Selection methods where visual obstruction was included as a habitat variable.
 
 `edgedist` is a continuous variable because it measures distance to the prairie dog colony edge. As distance to colony edge increases, the probability of nest-site use would probably decrease because the paper suggests plovers are more likely to use areas closer to colony edges than deep colony cores. I found this in the Discussion where the authors say probability of site use declined near the cores of large colonies and that distance to colony edge was a strong driver of plover presence. 
+
+## c. 
+| Model number | Visual obstruction | Distance to prairie dog colony | Predictor list |
+|---|---|---|---|
+| 1 |  |  | no predictors (null model) |
+| 2 | x |  | visual obstruction |
+| 3 |  | x | distance to prairie dog colony edge |
+| 4 | x | x | all predictors (full model) |
+
+## d. 
+```{r}
+mopl_clean <- mopl |>
+  clean_names() |>
+  mutate(
+    used_bin = case_when(
+      id == "used" ~ 1,
+      id == "available" ~ 0
+    )
+  ) |>
+  select(used_bin, edgedist, vo_nest) |>
+  drop_na()
+```
+
+```{r}
+# model 1: null model
+model1 <- glm(
+  used_bin ~ 1,
+  data = mopl_clean,
+  family = binomial
+)
+
+# model 2: visual obstruction only
+model2 <- glm(
+  used_bin ~ vo_nest,
+  data = mopl_clean,
+  family = binomial
+)
+
+# model 3: distance to colony edge only
+model3 <- glm(
+  used_bin ~ edgedist,
+  data = mopl_clean,
+  family = binomial
+)
+
+# model 4: full model
+model4 <- glm(
+  used_bin ~ vo_nest + edgedist,
+  data = mopl_clean,
+  family = binomial
+)
+```
+
