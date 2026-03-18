@@ -1,7 +1,9 @@
 ---
-title: "Final"
+title: "ENVS 193DS Final"
 format: html
-author: Rylee sheils 
+output-file: index.html
+output-dir: ../docs
+editor: visual
 ---
 
 GitHub repository: [ENVS-193DS_winter-2026_final](https://github.com/ryleesheils/ENVS-193DS_winter-2026_final)
