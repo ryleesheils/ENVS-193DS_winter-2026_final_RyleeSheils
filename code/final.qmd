@@ -16,3 +16,7 @@ library(janitor)
 library(forcats)
 ```
 
+# Problem 1. Research writing 
+##a. Transparent Staatisitcal Methods 
+In part 1, they used a simple linear regression because they tested whether precipitation predicts flooded wetland area. In part 2, they used a Kruskal–Wallis rank-sum test because they tested whether median flooded wetland area differs across five water year classification groups.
+##b. Figure Needed
