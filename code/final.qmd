@@ -115,4 +115,6 @@ ggplot(kelp_clean, aes(x = year, y = mean_fronds, color = site_name)) +
   )
 ```
 
+## d. 
+The figure shows that mean kelp fronds vary across both year and site. Isla Vista tends to have the highest values and the biggest changes over time, while Naples and Carpinteria are usually lower. Overall, the plot suggests that kelp abundance is not constant and differs depending on location and year.
 
