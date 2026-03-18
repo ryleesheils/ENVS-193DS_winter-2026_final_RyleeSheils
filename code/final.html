@@ -180,11 +180,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 5 × 3
   site_name    year mean_fronds
   &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 Naples       2007       17.2 
-2 Isla Vista   2008       39.4 
-3 Carpinteria  2020        3.56
-4 Isla Vista   2021       13.1 
-5 Isla Vista   2007       23.6 </code></pre>
+1 Isla Vista   2008       39.4 
+2 Carpinteria  2017       13.4 
+3 Isla Vista   2014       19.9 
+4 Carpinteria  2000        7.98
+5 Naples       2009        5.44</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -196,6 +196,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  $ mean_fronds: num [1:77] 1.8947 0.0606 3.0111 9.2596 7.8141 ...</code></pre>
 </div>
 </div>
+</section>
+<section id="b.-understanding-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="b.-understanding-the-data">b. Understanding the Data</h2>
+<p>The observation from 2000-09-22 in transect 6 and quad 40 is filtered out because the <code>fronds</code> value is <code>-99999</code>, which is a missing-data code rather than a real measurement. In this dataset, <code>FRONDS</code> represents the number of giant kelp fronds greater than 1 meter tall, and for this row the value appears because the datasheet was missing, so it should not be treated as an actual frond count.</p>
 </section>
 </section>
 

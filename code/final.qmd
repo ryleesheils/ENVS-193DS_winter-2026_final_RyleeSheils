@@ -85,4 +85,5 @@ slice_sample(kelp_clean, n = 5)
 str(kelp_clean)
 ```
 
-
+## b. Understanding the Data 
+The observation from 2000-09-22 in transect 6 and quad 40 is filtered out because the `fronds` value is `-99999`, which is a missing-data code rather than a real measurement. In this dataset, `FRONDS` represents the number of giant kelp fronds greater than 1 meter tall, and for this row the value appears because the datasheet was missing, so it should not be treated as an actual frond count. 
