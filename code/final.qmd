@@ -293,7 +293,7 @@ predict(
 ```
 At a visual obstruction value of 0, the predicted probability of Mountain Plover nest-site occupancy is 0.732. This means the model predicts about a 73.2% probability that a site with no visual obstruction would be used as a nest site.
 
-## j. 
+## j. Interpret Results 
 The results suggest that visual obstruction is an important predictor of Mountain Plover nest-site use. As visual obstruction increases, the predicted probability of nest-site use decreases, which suggests that Mountain Plovers are more likely to select open nesting areas with little visual blockage. This aligns with the ecological the paper, which describes Mountain Plovers as birds that prefer relatively flat areas with bare ground and sparse vegetation.
 
 # Problem 4. Affective and Exploratory Visualizations
@@ -301,13 +301,13 @@ The results suggest that visual obstruction is an important predictor of Mountai
 ## a. Comparing Visualizations 
 
 ### How are the visualizations different?
-My Homework 2 exploratory visualizations represented the data in a more standard statistical way, using separate plots to isolate one relationship at a time, like cloud cover and energy or temperature and energy. By contrast, my affective visualization turns the same daily observations into a hand-drawn flower garden, where each flower stands for one day and multiple variables are layered into the same symbol through stem height, petal number, color, leaves, and flower center.
+My Homework 2 exploratory visualizations represented the data in a more standard statistical way, using separate box plots with jitters to isolate one relationship at a time, like cloud cover and energy or temperature and energy. By contrast, my effective visualization turns the same daily observations into a hand-drawn flower garden, where each flower stands for one day and multiple variables are layered into the same symbol through stem height, petal number, color, leaves, and flower center.
 
 ### Similarities 
 All of my visualizations are still based on the same personal daily data and focus on understanding what shapes my energy over time. Even though the style changes, they all keep energy as the main outcome and try to connect it to other daily conditions like cloud cover, sleep, and other factors that may influence how I feel.
 
 ### Patterns 
-Across both the exploratory and affective visualizations, I see that energy seems to shift with weather and other daily conditions rather than staying constant. In Homework 2, I wrote that higher temperatures seemed to be associated with slightly higher energy levels and that cloud cover might also matter, while the flower visualization reinforces that energy is highest on some bright, open-feeling days but also shows that sleep, assignments, caffeine, and steps are happening at the same time. The patterns are not completely different, but the affective visualization makes the data feel more layered and personal because several variables are shown together. Something I did notice is that I tended to have very low energy levels on Friday's which is interesting as that is my final day of the week for assignments and school. 
+Across both the exploratory and affective visualizations, I see that energy seems to shift with weather and other daily conditions rather than staying constant. In Homework 2, I wrote that higher temperatures seemed to be associated with slightly higher energy levels and that cloud cover might also matter, while the flower visualization reinforces that energy is highest on some bright days but also shows that sleep, assignments, caffeine, and steps are happening at the same time. The patterns are not completely different, but the affective visualization makes the data feel more layered and personal because several variables are shown together. Something I did notice is that I tended to have very low energy levels on Friday's which is interesting as that is my final day of the week for assignments and school. 
 
 ### Feedback 
 During week 9 workshop my group gave me the fantastic idea of visualizing my data through flowers. I implemented that process by making sure each flower feature had a clear meaning and that the final piece had a readable legend, consistent visual structure, and a clear connection between the timeline and the variables being represented. After presenting my visualization in week 10, it was clear that this was a solid choice as my peers said it was easy to follow yet displayed a lot of different variables of data. 
@@ -321,55 +321,69 @@ I would use a Kruskal-Wallis test to answer this question. My response variable 
 
 ## c. Check Assumptions and Run Analysis 
 Because my response variable was energy level on a 1 to 5 scale and my predictor variable was cloud cover category, I used a non-parametric Kruskal-Wallis test instead of a parametric ANOVA. I first checked the number of observations in each recoded cloud cover group and looked at the underlying data with a jitter plot to make sure the categories were reasonable for comparison.
+
+Set up
 ```{r}
-daily_data <- read_csv(here("data", "ENVSdsresearch.csv"))
+#| label: Set up personal Data
+#| message: false
+#| warning: false
+daily_data <- read_csv(here("data", "ENVSdsresearch.csv")) #create new data frame with personal data 
 ```
 
+Clean Data
 ```{r}
-daily_clean <- daily_data |>
+#| label: Clean Personal Data 
+daily_clean <- daily_data |> #clean personal data 
   clean_names() |>
-  mutate(
+  mutate( #create new columns combining partly cloudy and cloudy 
     cloud_group = case_when(
-      cloud_cover == "mostly clear" ~ "clear",
-      cloud_cover == "partly cloudy" ~ "cloudy",
-      cloud_cover == "cloudy" ~ "cloudy",
-      cloud_cover == "cloudy/rain" ~ "rain"
+      cloud_cover == "mostly clear" ~ "clear",  #assign category
+      cloud_cover == "partly cloudy" ~ "cloudy", #assign category
+      cloud_cover == "cloudy" ~ "cloudy", #assign category
+      cloud_cover == "cloudy/rain" ~ "rain" #asssign category 
     ),
-    cloud_group = as_factor(cloud_group),
+    cloud_group = as_factor(cloud_group), #group by factor 
     cloud_group = fct_relevel(cloud_group, "clear", "cloudy", "rain")
   ) |>
-  select(cloud_group, energy_level_1_5)
+  select(cloud_group, energy_level_1_5) #select group and energy level 
 
 ```
 
+Show count Per Category
 ```{r}
-count(daily_clean, cloud_group)
+#| label: Count
+#| message: true
+#| warning: false
+count(daily_clean, cloud_group) #shou count for each category 
 ```
 
+Create plot visualization
 ```{r}
-ggplot(daily_clean, aes(x = cloud_group, y = energy_level_1_5, color = cloud_group)) +
-  geom_jitter(width = 0.15, height = 0, size = 2, alpha = 0.7) +
+#| label: Plot 
+ggplot(daily_clean, aes(x = cloud_group, y = energy_level_1_5, color = cloud_group)) + #creae gg plot and assign axis 
+  geom_jitter(width = 0.15, height = 0, size = 2, alpha = 0.7) + #addi jitter 
   labs(
-    x = "Cloud cover condition",
-    y = "Energy level (1–5)"
+    x = "Cloud cover condition", #label x axis 
+    y = "Energy level (1–5)" #label y axis 
   ) +
-  theme_classic()
+  theme_classic() #set theme 
+```
+
+Run test 
+```{r}
+kruskal.test(energy_level_1_5 ~ cloud_group, data = daily_clean) #run test 
 ```
 
 ```{r}
-kruskal.test(energy_level_1_5 ~ cloud_group, data = daily_clean)
-```
-
-```{r}
-kruskal_result <- kruskal.test(energy_level_1_5 ~ cloud_group, data = daily_clean)
+kruskal_result <- kruskal.test(energy_level_1_5 ~ cloud_group, data = daily_clean) #show results 
 
 n <- nrow(daily_clean)
 k <- nlevels(daily_clean$cloud_group)
 H <- as.numeric(kruskal_result$statistic)
 
-eta_squared_H <- (H - k + 1) / (n - k)
+eta_squared_H <- (H - k + 1) / (n - k) 
 
-eta_squared_H
+eta_squared_H #show results 
 ```
 
 I ran a Kruskal-Wallis test to compare energy levels across cloud cover conditions. I used the recoded categories clear, cloudy, and rain, where clear represented mostly clear days, cloudy combined partly cloudy and cloudy days, and rain represented cloudy/rain days. The test was not statistically significant, 
@@ -400,19 +414,19 @@ p=0.176, which suggests there is not strong evidence that typical energy level d
 ## d. Create Visualization 
 
 ```{r}
-ggplot(daily_clean, aes(x = cloud_group, y = energy_level_1_5, color = cloud_group)) +
-  geom_boxplot(outlier.shape = NA, alpha = 0.2, width = 0.5) +
-  geom_jitter(width = 0.15, height = 0, size = 2.4, alpha = 0.8) +
+ggplot(daily_clean, aes(x = cloud_group, y = energy_level_1_5, color = cloud_group)) + #create ggplot 
+  geom_boxplot(outlier.shape = NA, alpha = 0.2, width = 0.5) + #add boxplots 
+  geom_jitter(width = 0.15, height = 0, size = 2.4, alpha = 0.8) + #add jitter 
   scale_color_manual(values = c(
-    "clear" = "#F2C94C",
-    "cloudy" = "#56B4E9",
-    "rain" = "#8E63CE"
+    "clear" = "#F2C94C", #change colors 
+    "cloudy" = "#56B4E9", #change colors 
+    "rain" = "#8E63CE" #change colors 
   )) +
   labs(
-    x = "Cloud cover condition",
-    y = "Energy level (1–5)"
+    x = "Cloud cover condition", #label x axis 
+    y = "Energy level (1–5)" #label y axis 
   ) +
-  theme_classic()
+  theme_classic() #set theme to classic 
 ```
 To reflect the Kruskal-Wallis analysis, I created a boxplot with jittered points showing energy level across recoded cloud cover groups. This visualization makes it easier to compare the spread and typical values of energy across the weather categories while still showing the underlying observations.
 

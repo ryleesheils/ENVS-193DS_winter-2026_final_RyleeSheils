@@ -175,11 +175,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 5 × 3
   site_name    year mean_fronds
   &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 Carpinteria  2012       16.6 
-2 Naples       2019        4.47
-3 Naples       2012       10.5 
-4 Isla Vista   2023        3.78
-5 Isla Vista   2011        9.63</code></pre>
+1 Isla Vista   2024       10.3 
+2 Carpinteria  2003        5.27
+3 Carpinteria  2010        3.53
+4 Carpinteria  2023        4.50
+5 Carpinteria  2005        6.24</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -454,8 +454,8 @@ model4  3 333.7410</code></pre>
 </div>
 <p>At a visual obstruction value of 0, the predicted probability of Mountain Plover nest-site occupancy is 0.732. This means the model predicts about a 73.2% probability that a site with no visual obstruction would be used as a nest site.</p>
 </section>
-<section id="j." class="level2">
-<h2 class="anchored" data-anchor-id="j.">j.</h2>
+<section id="j.-interpret-results" class="level2">
+<h2 class="anchored" data-anchor-id="j.-interpret-results">j. Interpret Results</h2>
 <p>The results suggest that visual obstruction is an important predictor of Mountain Plover nest-site use. As visual obstruction increases, the predicted probability of nest-site use decreases, which suggests that Mountain Plovers are more likely to select open nesting areas with little visual blockage. This aligns with the ecological the paper, which describes Mountain Plovers as birds that prefer relatively flat areas with bare ground and sparse vegetation.</p>
 </section>
 </section>
@@ -465,7 +465,7 @@ model4  3 333.7410</code></pre>
 <h2 class="anchored" data-anchor-id="a.-comparing-visualizations">a. Comparing Visualizations</h2>
 <section id="how-are-the-visualizations-different" class="level3">
 <h3 class="anchored" data-anchor-id="how-are-the-visualizations-different">How are the visualizations different?</h3>
-<p>My Homework 2 exploratory visualizations represented the data in a more standard statistical way, using separate plots to isolate one relationship at a time, like cloud cover and energy or temperature and energy. By contrast, my affective visualization turns the same daily observations into a hand-drawn flower garden, where each flower stands for one day and multiple variables are layered into the same symbol through stem height, petal number, color, leaves, and flower center.</p>
+<p>My Homework 2 exploratory visualizations represented the data in a more standard statistical way, using separate box plots with jitters to isolate one relationship at a time, like cloud cover and energy or temperature and energy. By contrast, my effective visualization turns the same daily observations into a hand-drawn flower garden, where each flower stands for one day and multiple variables are layered into the same symbol through stem height, petal number, color, leaves, and flower center.</p>
 </section>
 <section id="similarities" class="level3">
 <h3 class="anchored" data-anchor-id="similarities">Similarities</h3>
@@ -473,7 +473,7 @@ model4  3 333.7410</code></pre>
 </section>
 <section id="patterns" class="level3">
 <h3 class="anchored" data-anchor-id="patterns">Patterns</h3>
-<p>Across both the exploratory and affective visualizations, I see that energy seems to shift with weather and other daily conditions rather than staying constant. In Homework 2, I wrote that higher temperatures seemed to be associated with slightly higher energy levels and that cloud cover might also matter, while the flower visualization reinforces that energy is highest on some bright, open-feeling days but also shows that sleep, assignments, caffeine, and steps are happening at the same time. The patterns are not completely different, but the affective visualization makes the data feel more layered and personal because several variables are shown together. Something I did notice is that I tended to have very low energy levels on Friday’s which is interesting as that is my final day of the week for assignments and school.</p>
+<p>Across both the exploratory and affective visualizations, I see that energy seems to shift with weather and other daily conditions rather than staying constant. In Homework 2, I wrote that higher temperatures seemed to be associated with slightly higher energy levels and that cloud cover might also matter, while the flower visualization reinforces that energy is highest on some bright days but also shows that sleep, assignments, caffeine, and steps are happening at the same time. The patterns are not completely different, but the affective visualization makes the data feel more layered and personal because several variables are shown together. Something I did notice is that I tended to have very low energy levels on Friday’s which is interesting as that is my final day of the week for assignments and school.</p>
 </section>
 <section id="feedback" class="level3">
 <h3 class="anchored" data-anchor-id="feedback">Feedback</h3>
@@ -488,37 +488,29 @@ model4  3 333.7410</code></pre>
 <section id="c.-check-assumptions-and-run-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="c.-check-assumptions-and-run-analysis">c.&nbsp;Check Assumptions and Run Analysis</h2>
 <p>Because my response variable was energy level on a 1 to 5 scale and my predictor variable was cloud cover category, I used a non-parametric Kruskal-Wallis test instead of a parametric ANOVA. I first checked the number of observations in each recoded cloud cover group and looked at the underlying data with a jitter plot to make sure the categories were reasonable for comparison.</p>
+<p>Set up</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>daily_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"ENVSdsresearch.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 30 Columns: 8
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (2): Date, Cloud Cover
-dbl (5): Temperature (°F), Energy Level (1–5), Hours slept, caffiene (mg), A...
-num (1): Steps Taken
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>daily_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"ENVSdsresearch.csv"</span>)) <span class="co">#create new data frame with personal data </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
+<p>Clean Data</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>daily_clean <span class="ot">&lt;-</span> daily_data <span class="sc">|&gt;</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cloud_group =</span> <span class="fu">case_when</span>(</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>      cloud_cover <span class="sc">==</span> <span class="st">"mostly clear"</span> <span class="sc">~</span> <span class="st">"clear"</span>,</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>      cloud_cover <span class="sc">==</span> <span class="st">"partly cloudy"</span> <span class="sc">~</span> <span class="st">"cloudy"</span>,</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>      cloud_cover <span class="sc">==</span> <span class="st">"cloudy"</span> <span class="sc">~</span> <span class="st">"cloudy"</span>,</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>      cloud_cover <span class="sc">==</span> <span class="st">"cloudy/rain"</span> <span class="sc">~</span> <span class="st">"rain"</span></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cloud_group =</span> <span class="fu">as_factor</span>(cloud_group),</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">cloud_group =</span> <span class="fu">fct_relevel</span>(cloud_group, <span class="st">"clear"</span>, <span class="st">"cloudy"</span>, <span class="st">"rain"</span>)</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(cloud_group, energy_level_1_5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>daily_clean <span class="ot">&lt;-</span> daily_data <span class="sc">|&gt;</span> <span class="co">#clean personal data </span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="co">#create new columns combining partly cloudy and cloudy </span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cloud_group =</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>      cloud_cover <span class="sc">==</span> <span class="st">"mostly clear"</span> <span class="sc">~</span> <span class="st">"clear"</span>,  <span class="co">#assign category</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>      cloud_cover <span class="sc">==</span> <span class="st">"partly cloudy"</span> <span class="sc">~</span> <span class="st">"cloudy"</span>, <span class="co">#assign category</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>      cloud_cover <span class="sc">==</span> <span class="st">"cloudy"</span> <span class="sc">~</span> <span class="st">"cloudy"</span>, <span class="co">#assign category</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>      cloud_cover <span class="sc">==</span> <span class="st">"cloudy/rain"</span> <span class="sc">~</span> <span class="st">"rain"</span> <span class="co">#asssign category </span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cloud_group =</span> <span class="fu">as_factor</span>(cloud_group), <span class="co">#group by factor </span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">cloud_group =</span> <span class="fu">fct_relevel</span>(cloud_group, <span class="st">"clear"</span>, <span class="st">"cloudy"</span>, <span class="st">"rain"</span>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(cloud_group, energy_level_1_5) <span class="co">#select group and energy level </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>Show count Per Category</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(daily_clean, cloud_group)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(daily_clean, cloud_group) <span class="co">#shou count for each category </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 2
   cloud_group     n
@@ -528,24 +520,26 @@ num (1): Steps Taken
 3 rain            3</code></pre>
 </div>
 </div>
+<p>Create plot visualization</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(daily_clean, <span class="fu">aes</span>(<span class="at">x =</span> cloud_group, <span class="at">y =</span> energy_level_1_5, <span class="at">color =</span> cloud_group)) <span class="sc">+</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">height =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Cloud cover condition"</span>,</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Energy level (1–5)"</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(daily_clean, <span class="fu">aes</span>(<span class="at">x =</span> cloud_group, <span class="at">y =</span> energy_level_1_5, <span class="at">color =</span> cloud_group)) <span class="sc">+</span> <span class="co">#creae gg plot and assign axis </span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">height =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span> <span class="co">#addi jitter </span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Cloud cover condition"</span>, <span class="co">#label x axis </span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Energy level (1–5)"</span> <span class="co">#label y axis </span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="co">#set theme </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="final_files/figure-html/Plot-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+<p>Run test</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kruskal.test</span>(energy_level_1_5 <span class="sc">~</span> cloud_group, <span class="at">data =</span> daily_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kruskal.test</span>(energy_level_1_5 <span class="sc">~</span> cloud_group, <span class="at">data =</span> daily_clean) <span class="co">#run test </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Kruskal-Wallis rank sum test
@@ -555,15 +549,15 @@ Kruskal-Wallis chi-squared = 3.475, df = 2, p-value = 0.176</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>kruskal_result <span class="ot">&lt;-</span> <span class="fu">kruskal.test</span>(energy_level_1_5 <span class="sc">~</span> cloud_group, <span class="at">data =</span> daily_clean)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(daily_clean)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="fu">nlevels</span>(daily_clean<span class="sc">$</span>cloud_group)</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>H <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(kruskal_result<span class="sc">$</span>statistic)</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>eta_squared_H <span class="ot">&lt;-</span> (H <span class="sc">-</span> k <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">/</span> (n <span class="sc">-</span> k)</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>eta_squared_H</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>kruskal_result <span class="ot">&lt;-</span> <span class="fu">kruskal.test</span>(energy_level_1_5 <span class="sc">~</span> cloud_group, <span class="at">data =</span> daily_clean) <span class="co">#show results </span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(daily_clean)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="fu">nlevels</span>(daily_clean<span class="sc">$</span>cloud_group)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>H <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(kruskal_result<span class="sc">$</span>statistic)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>eta_squared_H <span class="ot">&lt;-</span> (H <span class="sc">-</span> k <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">/</span> (n <span class="sc">-</span> k) </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>eta_squared_H <span class="co">#show results </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.05463112</code></pre>
 </div>
@@ -573,23 +567,23 @@ Kruskal-Wallis chi-squared = 3.475, df = 2, p-value = 0.176</code></pre>
 <section id="d.-create-visualization" class="level2">
 <h2 class="anchored" data-anchor-id="d.-create-visualization">d.&nbsp;Create Visualization</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(daily_clean, <span class="fu">aes</span>(<span class="at">x =</span> cloud_group, <span class="at">y =</span> energy_level_1_5, <span class="at">color =</span> cloud_group)) <span class="sc">+</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">width =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">height =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="fl">2.4</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"clear"</span> <span class="ot">=</span> <span class="st">"#F2C94C"</span>,</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cloudy"</span> <span class="ot">=</span> <span class="st">"#56B4E9"</span>,</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rain"</span> <span class="ot">=</span> <span class="st">"#8E63CE"</span></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Cloud cover condition"</span>,</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Energy level (1–5)"</span></span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(daily_clean, <span class="fu">aes</span>(<span class="at">x =</span> cloud_group, <span class="at">y =</span> energy_level_1_5, <span class="at">color =</span> cloud_group)) <span class="sc">+</span> <span class="co">#create ggplot </span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">width =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="co">#add boxplots </span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">height =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="fl">2.4</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span> <span class="co">#add jitter </span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"clear"</span> <span class="ot">=</span> <span class="st">"#F2C94C"</span>, <span class="co">#change colors </span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cloudy"</span> <span class="ot">=</span> <span class="st">"#56B4E9"</span>, <span class="co">#change colors </span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rain"</span> <span class="ot">=</span> <span class="st">"#8E63CE"</span> <span class="co">#change colors </span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Cloud cover condition"</span>, <span class="co">#label x axis </span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Energy level (1–5)"</span> <span class="co">#label y axis </span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="co">#set theme to classic </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="final_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
