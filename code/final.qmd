@@ -14,6 +14,7 @@ GitHub repository: [ENVS-193DS_winter-2026_final](https://github.com/ryleesheils
 library(tidyverse)
 library(janitor)
 library(forcats)
+library(here)
 ```
 
 # Problem 1. Research writing
@@ -37,10 +38,14 @@ One additional variable that could influence flooded wetland area is median dail
 ## a. Cleaning and Summarizing 
 
 ```{r}
-kelp <- read_csv("data/kelp_data.csv")
+#| message: false
+#| warning: false
+kelp <- read_csv(here("data", "kelp_data.csv"))
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 kelp_clean <- kelp |>
   clean_names() |>
   # cleans the column names
