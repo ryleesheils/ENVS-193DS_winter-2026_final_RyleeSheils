@@ -48,6 +48,7 @@ kelp <- read_csv(here("data", "kelp_data.csv")) #Read in Kelp data and make data
 ```
 
 ```{r}
+#| label: Clean Kelp Data
 #| message: false
 #| warning: false
 kelp_clean <- kelp |> # make new data frame called data clean 
@@ -75,10 +76,12 @@ kelp_clean <- kelp |> # make new data frame called data clean
 ```
 
 ```{r}
+#| label: Slice Sample
 slice_sample(kelp_clean, n = 5) #show sample of clean data
 ```
 
 ```{r}
+#| label: STR kelp
 str(kelp_clean) #show str 
 ```
 
@@ -87,6 +90,9 @@ The observation from 2000-09-22 in transect 6 and quad 40 is filtered out becaus
 
 ## c. Visualize the Data
 ```{r}
+#| label: Create Plot for Data 
+#| message: false
+#| warning: false
 ggplot(kelp_clean, aes(x = year, y = mean_fronds, color = site_name)) + #create plot with clean data and add x and y variables 
   geom_line(linewidth = 0.7) + #change width of line 
   geom_point(size = 2) + #change size of points
@@ -112,7 +118,7 @@ ggplot(kelp_clean, aes(x = year, y = mean_fronds, color = site_name)) + #create 
   )
 ```
 
-## d. 
+## d. Interpretaion
 The figure shows that mean kelp fronds vary across both year and site. Isla Vista tends to have the highest values and the biggest changes over time, while Naples and Carpinteria are usually lower. Overall, the plot suggests that kelp abundance is not constant and differs depending on location and year.
 
 # Problem 3. Data Analysis
@@ -120,20 +126,21 @@ The figure shows that mean kelp fronds vary across both year and site. Isla Vist
 
 ## Set up 
 ```{r}
+#| label: Set up 
 #| message: false
 #| warning: false
-mopl <- read_csv(here("data", "MOPL_nest-site_selection_Duchardt_et_al._2019.csv"))
+mopl <- read_csv(here("data", "MOPL_nest-site_selection_Duchardt_et_al._2019.csv")) #read in data into a data frame called mopl
 ```
 
 ## a. Response Varirables 
 In this data set, a value of 1 means the location was a nest site that was used by a Mountain Plover, and a value of 0 means the location was an available site that was not used for nesting. Biologically, the response variable represents nest-site use, or whether a Mountain Plover selected that location for nesting.
 
-## b. 
-`vo_nest` is a continuous variable because it is measured numerically. As visual obstruction increases, the probability of Mountain Plover nest-site use would probably decrease because plovers tend to choose open nesting habitat with shorter and less dense vegetation. I found this in the Introduction where the paper says Mountain Plovers typically breed in areas with extensive bare ground and short, sparse vegetation, and in the Nest-Site Selection methods where visual obstruction was included as a habitat variable.
+## b. Purpose of Study 
+`vo_nest` is a continuous variable because it is measured numerically. As visual obstruction increases, the probability of Mountain Plover nest-site use would  decrease because plovers tend to choose open nesting habitat with shorter and less dense vegetation. This is summed up in the Introduction where the paper mentions that Mountain Plovers typically breed in areas with extensive bare ground and short, sparse vegetation.
 
-`edgedist` is a continuous variable because it measures distance to the prairie dog colony edge. As distance to colony edge increases, the probability of nest-site use would probably decrease because the paper suggests plovers are more likely to use areas closer to colony edges than deep colony cores. I found this in the Discussion where the authors say probability of site use declined near the cores of large colonies and that distance to colony edge was a strong driver of plover presence. 
+`edgedist` is a continuous variable because it measures distance to the prairie dog colony edge. As distance to colony edge increases, the probability of nest-site use would probably decrease because the paper suggests plovers are more likely to use areas closer to colony edges than deep colony cores. This can be found in the Discussion portion where the authors say probability of site use declined near the cores of large colonies and that distance to colony edge was a strong driver of plover presence. 
 
-## c. 
+## c. Table of Models 
 | Model number | Visual obstruction | Distance to prairie dog colony | Predictor list |
 |---|---|---|---|
 | 1 |  |  | no predictors (null model) |
@@ -141,21 +148,24 @@ In this data set, a value of 1 means the location was a nest site that was used 
 | 3 |  | x | distance to prairie dog colony edge |
 | 4 | x | x | all predictors (full model) |
 
-## d. 
+## d. Run the Models 
 ```{r}
-mopl_clean <- mopl |>
-  clean_names() |>
+#| label: Run Models 
+#| warning: false
+mopl_clean <- mopl |> #start with clean data frame 
+  clean_names() |> #clean the names in the data folder
   mutate(
     used_bin = case_when(
-      id == "used" ~ 1,
-      id == "available" ~ 0
+      id == "used" ~ 1, # when used = 1
+      id == "available" ~ 0 # when available = 0
     )
   ) |>
-  select(used_bin, edgedist, vo_nest) |>
+  select(used_bin, edgedist, vo_nest) |> #select attributes 
   drop_na()
 ```
 
 ```{r}
+#| label: Create Models 
 # model 1: null model
 model1 <- glm(
   used_bin ~ 1,
@@ -185,23 +195,25 @@ model4 <- glm(
 )
 ```
 
-## e. 
+## e. Select the Best Model 
 
 ```{r}
-AIC(model1, model2, model3, model4)
+#| label: run AIC 
+AIC(model1, model2, model3, model4) #run test to determine best model 
 ```
 
-The best model as determined by Akaike’s Information Criterion (AIC) was the model predicting Mountain Plover nest-site use from visual obstruction. This model had the lowest AIC value (331.769), so it provided the best fit among the candidate models while balancing model complexity.
+The best model, determined by Akaike’s Information Criterion (AIC), was the model 2 which predicted Mountain Plover nest-site use from visual obstruction. This model had the lowest AIC value (331.769), so it provided the best fit among the candidate models while balancing model complexity.
 
-## f. 
+## f. Check Diagnostics 
 
 ```{r}
+#| label: Check Diagnostics 
 
-model2_sim <- simulateResiduals(fittedModel = model2)
+model2_sim <- simulateResiduals(fittedModel = model2) #check diagnostics using simulated DHARMA residuals 
 
 plot(model2_sim)
 ```
-I checked the diagnostics for the selected logistic regression model using simulated DHARMa residuals. The diagnostic plots did not show any significant problems, and the formal tests suggested no evidence of poor residual fit, overdispersion, or unusual outliers. Overall, the model appears to meet the assumptions reasonably well.
+I checked the diagnostics for the selected logistic regression model using simulated DHARMa residuals. The diagnostic plots did not show any significant problems, and the formal tests suggested no significant evidence of poor residual fit, overdispersion, or unusual outliers. Overall, the model appears to meet the previously made assumptions well.
 
 From the figure:
 
@@ -213,72 +225,76 @@ Outlier test p = 1 → no evidence of problematic outliers
 
 the top-right panel also says “No significant problems detected"
 
-## g. 
+## g. Visualize the model predicitons 
 ```{r}
-pred_data <- tibble(
-  vo_nest = seq(
-    from = min(mopl_clean$vo_nest, na.rm = TRUE),
-    to = max(mopl_clean$vo_nest, na.rm = TRUE),
-    length.out = 100
+#| label: Set up prediciton data 
+#| message: false
+#| warning: false
+pred_data <- tibble( #creates empty tibble
+  vo_nest = seq( #creates new colomn called vo_nest
+    from = min(mopl_clean$vo_nest, na.rm = TRUE), #starts sequence at min
+    to = max(mopl_clean$vo_nest, na.rm = TRUE),  #ends seqence at max
+    length.out = 100 #creates 100 spread out values 
   )
 )
 
-predictions <- predict(model2, newdata = pred_data, type = "link", se.fit = TRUE)
+predictions <- predict(model2, newdata = pred_data, type = "link", se.fit = TRUE) #use regression model to generate predictions
 
-pred_data <- pred_data |>
-  mutate(
+pred_data <- pred_data |> #uses pred data as new data for predictions
+  mutate( #creates new colums based on predictions 
     fit_link = predictions$fit,
     se_link = predictions$se.fit,
     fit_prob = plogis(fit_link),
-    lower_ci = plogis(fit_link - 1.96 * se_link),
-    upper_ci = plogis(fit_link + 1.96 * se_link)
+    lower_ci = plogis(fit_link - 1.96 * se_link), #95% interval 
+    upper_ci = plogis(fit_link + 1.96 * se_link) #95% interval 
   )
 ```
 
 ```{r}
-ggplot() +
-  geom_jitter(
-    data = mopl_clean,
-    aes(x = vo_nest, y = used_bin),
+#| label: Create plot to visualize data 
+ggplot() + #start with gg plot 
+  geom_jitter( #adds jitter 
+    data = mopl_clean, #use clean data frame 
+    aes(x = vo_nest, y = used_bin), #assign x variable and y variable 
     height = 0.03,
-    width = 0,
+    width = 0, #change dimensions of jitter 
     alpha = 0.4,
-    color = "#5B8A72"
+    color = "#5B8A72" #change color of jitter 
   ) +
   geom_ribbon(
-    data = pred_data,
-    aes(x = vo_nest, ymin = lower_ci, ymax = upper_ci),
-    fill = "#A5C4B0",
+    data = pred_data, #uses prediction data 
+    aes(x = vo_nest, ymin = lower_ci, ymax = upper_ci),  #add ribbon for 95% interval 
+    fill = "#A5C4B0", #color of ribbon
     alpha = 0.4
   ) +
-  geom_line(
-    data = pred_data,
-    aes(x = vo_nest, y = fit_prob),
-    color = "#1F5A4A",
-    linewidth = 1.2
+  geom_line( #add model prediction lines 
+    data = pred_data, #start with prediction data 
+    aes(x = vo_nest, y = fit_prob), # assign x and y 
+    color = "#1F5A4A", #line color 
+    linewidth = 1.2 #line width 
   ) +
   labs(
-    x = "Visual obstruction at nest",
+    x = "Visual obstruction at nest", #label x and y axis 
     y = "Predicted probability of Mountain Plover nest-site use"
   ) +
-  theme_classic()
+  theme_classic() #change theme to classic 
 ```
 
-## h. 
-Figure 1. Predicted probability of Mountain Plover nest-site use as a function of visual obstruction at the nest. Points show the underlying binary nest-site use data (0 = available but unused site, 1 = used nest site), the solid line shows predicted probabilities from the selected logistic regression model, and the shaded band shows 95% confidence interval around the predictions. Data source: Duchardt, Courtney; Beck, Jeffrey; Augustine, David (2020). Data from: Mountain Plover habitat selection and nest survival in relation to weather variability and spatial attributes of Black-tailed Prairie Dog disturbance [Dataset]. Dryad.
+## h. Captions 
+Figure 1. Predicted probability of Mountain Plover nest-site use as a function of visual obstruction at the nest. Points show the underlying binary nest-site use data (0 = available but unused site, 1 = used nest site), the solid line shows predicted probabilities from the selected logistic regression model, and the shaded band shows 95% confidence interval around the predictions. Data source: Duchardt, Courtney; Beck, Jeffrey; Augustine, David (2020). Data from: Mountain Plover habitat selection and nest survival in relation to weather variability and spatial attributes of Black-tailed Prairie Dog disturbance. 
 
-## i. 
+## i. Calculate Model Predictions 
 ```{r}
 predict(
   model2,
   newdata = tibble(vo_nest = 0),
   type = "response"
-)
+) #find predict probability 
 ```
 At a visual obstruction value of 0, the predicted probability of Mountain Plover nest-site occupancy is 0.732. This means the model predicts about a 73.2% probability that a site with no visual obstruction would be used as a nest site.
 
 ## j. 
-The results suggest that visual obstruction is an important predictor of Mountain Plover nest-site use. As visual obstruction increases, the predicted probability of nest-site use decreases, which suggests that Mountain Plovers are more likely to select open nesting areas with little visual blockage. This matches the ecological expectations from the paper, which describes Mountain Plovers as birds that prefer relatively flat areas with bare ground and sparse vegetation.
+The results suggest that visual obstruction is an important predictor of Mountain Plover nest-site use. As visual obstruction increases, the predicted probability of nest-site use decreases, which suggests that Mountain Plovers are more likely to select open nesting areas with little visual blockage. This aligns with the ecological the paper, which describes Mountain Plovers as birds that prefer relatively flat areas with bare ground and sparse vegetation.
 
 # Problem 4. Affective and Exploratory Visualizations
 

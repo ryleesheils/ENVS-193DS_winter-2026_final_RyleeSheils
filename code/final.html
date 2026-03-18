@@ -175,11 +175,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 5 × 3
   site_name    year mean_fronds
   &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 Carpinteria  2009        9.43
-2 Carpinteria  2017       13.4 
-3 Naples       2023        4.87
-4 Naples       2017        4.74
-5 Carpinteria  2022        9.52</code></pre>
+1 Carpinteria  2012       16.6 
+2 Naples       2019        4.47
+3 Naples       2012       10.5 
+4 Isla Vista   2023        3.78
+5 Isla Vista   2011        9.63</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -225,14 +225,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="final_files/figure-html/Create%20Plot%20for%20Data-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="d." class="level2">
-<h2 class="anchored" data-anchor-id="d.">d.&nbsp;</h2>
+<section id="d.-interpretaion" class="level2">
+<h2 class="anchored" data-anchor-id="d.-interpretaion">d.&nbsp;Interpretaion</h2>
 <p>The figure shows that mean kelp fronds vary across both year and site. Isla Vista tends to have the highest values and the biggest changes over time, while Naples and Carpinteria are usually lower. Overall, the plot suggests that kelp abundance is not constant and differs depending on location and year.</p>
 </section>
 </section>
@@ -241,20 +241,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="set-up-1" class="level2">
 <h2 class="anchored" data-anchor-id="set-up-1">Set up</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mopl <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"MOPL_nest-site_selection_Duchardt_et_al._2019.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mopl <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"MOPL_nest-site_selection_Duchardt_et_al._2019.csv"</span>)) <span class="co">#read in data into a data frame called mopl</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="a.-response-varirables" class="level2">
 <h2 class="anchored" data-anchor-id="a.-response-varirables">a. Response Varirables</h2>
 <p>In this data set, a value of 1 means the location was a nest site that was used by a Mountain Plover, and a value of 0 means the location was an available site that was not used for nesting. Biologically, the response variable represents nest-site use, or whether a Mountain Plover selected that location for nesting.</p>
 </section>
-<section id="b." class="level2">
-<h2 class="anchored" data-anchor-id="b.">b.</h2>
-<p><code>vo_nest</code> is a continuous variable because it is measured numerically. As visual obstruction increases, the probability of Mountain Plover nest-site use would probably decrease because plovers tend to choose open nesting habitat with shorter and less dense vegetation. I found this in the Introduction where the paper says Mountain Plovers typically breed in areas with extensive bare ground and short, sparse vegetation, and in the Nest-Site Selection methods where visual obstruction was included as a habitat variable.</p>
-<p><code>edgedist</code> is a continuous variable because it measures distance to the prairie dog colony edge. As distance to colony edge increases, the probability of nest-site use would probably decrease because the paper suggests plovers are more likely to use areas closer to colony edges than deep colony cores. I found this in the Discussion where the authors say probability of site use declined near the cores of large colonies and that distance to colony edge was a strong driver of plover presence.</p>
+<section id="b.-purpose-of-study" class="level2">
+<h2 class="anchored" data-anchor-id="b.-purpose-of-study">b. Purpose of Study</h2>
+<p><code>vo_nest</code> is a continuous variable because it is measured numerically. As visual obstruction increases, the probability of Mountain Plover nest-site use would decrease because plovers tend to choose open nesting habitat with shorter and less dense vegetation. This is summed up in the Introduction where the paper mentions that Mountain Plovers typically breed in areas with extensive bare ground and short, sparse vegetation.</p>
+<p><code>edgedist</code> is a continuous variable because it measures distance to the prairie dog colony edge. As distance to colony edge increases, the probability of nest-site use would probably decrease because the paper suggests plovers are more likely to use areas closer to colony edges than deep colony cores. This can be found in the Discussion portion where the authors say probability of site use declined near the cores of large colonies and that distance to colony edge was a strong driver of plover presence.</p>
 </section>
-<section id="c." class="level2">
-<h2 class="anchored" data-anchor-id="c.">c.&nbsp;</h2>
+<section id="c.-table-of-models" class="level2">
+<h2 class="anchored" data-anchor-id="c.-table-of-models">c.&nbsp;Table of Models</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -298,18 +298,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="d.-1" class="level2">
-<h2 class="anchored" data-anchor-id="d.-1">d.&nbsp;</h2>
+<section id="d.-run-the-models" class="level2">
+<h2 class="anchored" data-anchor-id="d.-run-the-models">d.&nbsp;Run the Models</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mopl_clean <span class="ot">&lt;-</span> mopl <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mopl_clean <span class="ot">&lt;-</span> mopl <span class="sc">|&gt;</span> <span class="co">#start with clean data frame </span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> <span class="co">#clean the names in the data folder</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">used_bin =</span> <span class="fu">case_when</span>(</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      id <span class="sc">==</span> <span class="st">"used"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      id <span class="sc">==</span> <span class="st">"available"</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      id <span class="sc">==</span> <span class="st">"used"</span> <span class="sc">~</span> <span class="dv">1</span>, <span class="co"># when used = 1</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      id <span class="sc">==</span> <span class="st">"available"</span> <span class="sc">~</span> <span class="dv">0</span> <span class="co"># when available = 0</span></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(used_bin, edgedist, vo_nest) <span class="sc">|&gt;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(used_bin, edgedist, vo_nest) <span class="sc">|&gt;</span> <span class="co">#select attributes </span></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
@@ -342,10 +342,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="e." class="level2">
-<h2 class="anchored" data-anchor-id="e.">e.</h2>
+<section id="e.-select-the-best-model" class="level2">
+<h2 class="anchored" data-anchor-id="e.-select-the-best-model">e. Select the Best Model</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(model1, model2, model3, model4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(model1, model2, model3, model4) <span class="co">#run test to determine best model </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       df      AIC
 model1  1 384.6172
@@ -354,99 +354,99 @@ model3  2 386.0911
 model4  3 333.7410</code></pre>
 </div>
 </div>
-<p>The best model as determined by Akaike’s Information Criterion (AIC) was the model predicting Mountain Plover nest-site use from visual obstruction. This model had the lowest AIC value (331.769), so it provided the best fit among the candidate models while balancing model complexity.</p>
+<p>The best model, determined by Akaike’s Information Criterion (AIC), was the model 2 which predicted Mountain Plover nest-site use from visual obstruction. This model had the lowest AIC value (331.769), so it provided the best fit among the candidate models while balancing model complexity.</p>
 </section>
-<section id="f." class="level2">
-<h2 class="anchored" data-anchor-id="f.">f.&nbsp;</h2>
+<section id="f.-check-diagnostics" class="level2">
+<h2 class="anchored" data-anchor-id="f.-check-diagnostics">f.&nbsp;Check Diagnostics</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model2_sim <span class="ot">&lt;-</span> <span class="fu">simulateResiduals</span>(<span class="at">fittedModel =</span> model2)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model2_sim <span class="ot">&lt;-</span> <span class="fu">simulateResiduals</span>(<span class="at">fittedModel =</span> model2) <span class="co">#check diagnostics using simulated DHARMA residuals </span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model2_sim)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="final_files/figure-html/Check%20Diagnostics-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>I checked the diagnostics for the selected logistic regression model using simulated DHARMa residuals. The diagnostic plots did not show any significant problems, and the formal tests suggested no evidence of poor residual fit, overdispersion, or unusual outliers. Overall, the model appears to meet the assumptions reasonably well.</p>
+<p>I checked the diagnostics for the selected logistic regression model using simulated DHARMa residuals. The diagnostic plots did not show any significant problems, and the formal tests suggested no significant evidence of poor residual fit, overdispersion, or unusual outliers. Overall, the model appears to meet the previously made assumptions well.</p>
 <p>From the figure:</p>
 <p>KS test p = 0.72382 → no evidence the residual distribution is off</p>
 <p>Dispersion test p = 0.992 → no evidence of overdispersion</p>
 <p>Outlier test p = 1 → no evidence of problematic outliers</p>
 <p>the top-right panel also says “No significant problems detected”</p>
 </section>
-<section id="g." class="level2">
-<h2 class="anchored" data-anchor-id="g.">g.</h2>
+<section id="g.-visualize-the-model-predicitons" class="level2">
+<h2 class="anchored" data-anchor-id="g.-visualize-the-model-predicitons">g. Visualize the model predicitons</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pred_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">vo_nest =</span> <span class="fu">seq</span>(</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">from =</span> <span class="fu">min</span>(mopl_clean<span class="sc">$</span>vo_nest, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">to =</span> <span class="fu">max</span>(mopl_clean<span class="sc">$</span>vo_nest, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">length.out =</span> <span class="dv">100</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pred_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>( <span class="co">#creates empty tibble</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">vo_nest =</span> <span class="fu">seq</span>( <span class="co">#creates new colomn called vo_nest</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">from =</span> <span class="fu">min</span>(mopl_clean<span class="sc">$</span>vo_nest, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co">#starts sequence at min</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">to =</span> <span class="fu">max</span>(mopl_clean<span class="sc">$</span>vo_nest, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),  <span class="co">#ends seqence at max</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">length.out =</span> <span class="dv">100</span> <span class="co">#creates 100 spread out values </span></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(model2, <span class="at">newdata =</span> pred_data, <span class="at">type =</span> <span class="st">"link"</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(model2, <span class="at">newdata =</span> pred_data, <span class="at">type =</span> <span class="st">"link"</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>) <span class="co">#use regression model to generate predictions</span></span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>pred_data <span class="ot">&lt;-</span> pred_data <span class="sc">|&gt;</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>pred_data <span class="ot">&lt;-</span> pred_data <span class="sc">|&gt;</span> <span class="co">#uses pred data as new data for predictions</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="co">#creates new colums based on predictions </span></span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fit_link =</span> predictions<span class="sc">$</span>fit,</span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">se_link =</span> predictions<span class="sc">$</span>se.fit,</span>
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">fit_prob =</span> <span class="fu">plogis</span>(fit_link),</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">lower_ci =</span> <span class="fu">plogis</span>(fit_link <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se_link),</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">upper_ci =</span> <span class="fu">plogis</span>(fit_link <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se_link)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">lower_ci =</span> <span class="fu">plogis</span>(fit_link <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se_link), <span class="co">#95% interval </span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">upper_ci =</span> <span class="fu">plogis</span>(fit_link <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se_link) <span class="co">#95% interval </span></span>
 <span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> mopl_clean,</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> vo_nest, <span class="at">y =</span> used_bin),</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="co">#start with gg plot </span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>( <span class="co">#adds jitter </span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> mopl_clean, <span class="co">#use clean data frame </span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> vo_nest, <span class="at">y =</span> used_bin), <span class="co">#assign x variable and y variable </span></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">height =</span> <span class="fl">0.03</span>,</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="dv">0</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="dv">0</span>, <span class="co">#change dimensions of jitter </span></span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.4</span>,</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"#5B8A72"</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"#5B8A72"</span> <span class="co">#change color of jitter </span></span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> pred_data,</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> vo_nest, <span class="at">ymin =</span> lower_ci, <span class="at">ymax =</span> upper_ci),</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"#A5C4B0"</span>,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> pred_data, <span class="co">#uses prediction data </span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> vo_nest, <span class="at">ymin =</span> lower_ci, <span class="at">ymax =</span> upper_ci),  <span class="co">#add ribbon for 95% interval </span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"#A5C4B0"</span>, <span class="co">#color of ribbon</span></span>
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.4</span></span>
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> pred_data,</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> vo_nest, <span class="at">y =</span> fit_prob),</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"#1F5A4A"</span>,</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">1.2</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>( <span class="co">#add model prediction lines </span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> pred_data, <span class="co">#start with prediction data </span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> vo_nest, <span class="at">y =</span> fit_prob), <span class="co"># assign x and y </span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"#1F5A4A"</span>, <span class="co">#line color </span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">1.2</span> <span class="co">#line width </span></span>
 <span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Visual obstruction at nest"</span>,</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Visual obstruction at nest"</span>, <span class="co">#label x and y axis </span></span>
 <span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Predicted probability of Mountain Plover nest-site use"</span></span>
 <span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="co">#change theme to classic </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="final_files/figure-html/Create%20plot%20to%20visualize%20data-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="h." class="level2">
-<h2 class="anchored" data-anchor-id="h.">h.</h2>
-<p>Figure 1. Predicted probability of Mountain Plover nest-site use as a function of visual obstruction at the nest. Points show the underlying binary nest-site use data (0 = available but unused site, 1 = used nest site), the solid line shows predicted probabilities from the selected logistic regression model, and the shaded band shows 95% confidence interval around the predictions. Data source: Duchardt, Courtney; Beck, Jeffrey; Augustine, David (2020). Data from: Mountain Plover habitat selection and nest survival in relation to weather variability and spatial attributes of Black-tailed Prairie Dog disturbance [Dataset]. Dryad.</p>
+<section id="h.-captions" class="level2">
+<h2 class="anchored" data-anchor-id="h.-captions">h. Captions</h2>
+<p>Figure 1. Predicted probability of Mountain Plover nest-site use as a function of visual obstruction at the nest. Points show the underlying binary nest-site use data (0 = available but unused site, 1 = used nest site), the solid line shows predicted probabilities from the selected logistic regression model, and the shaded band shows 95% confidence interval around the predictions. Data source: Duchardt, Courtney; Beck, Jeffrey; Augustine, David (2020). Data from: Mountain Plover habitat selection and nest survival in relation to weather variability and spatial attributes of Black-tailed Prairie Dog disturbance.</p>
 </section>
-<section id="i." class="level2">
-<h2 class="anchored" data-anchor-id="i.">i.</h2>
+<section id="i.-calculate-model-predictions" class="level2">
+<h2 class="anchored" data-anchor-id="i.-calculate-model-predictions">i. Calculate Model Predictions</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  model2,</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> <span class="fu">tibble</span>(<span class="at">vo_nest =</span> <span class="dv">0</span>),</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"response"</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>) <span class="co">#find predict probability </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        1 
 0.7320954 </code></pre>
@@ -456,7 +456,7 @@ model4  3 333.7410</code></pre>
 </section>
 <section id="j." class="level2">
 <h2 class="anchored" data-anchor-id="j.">j.</h2>
-<p>The results suggest that visual obstruction is an important predictor of Mountain Plover nest-site use. As visual obstruction increases, the predicted probability of nest-site use decreases, which suggests that Mountain Plovers are more likely to select open nesting areas with little visual blockage. This matches the ecological expectations from the paper, which describes Mountain Plovers as birds that prefer relatively flat areas with bare ground and sparse vegetation.</p>
+<p>The results suggest that visual obstruction is an important predictor of Mountain Plover nest-site use. As visual obstruction increases, the predicted probability of nest-site use decreases, which suggests that Mountain Plovers are more likely to select open nesting areas with little visual blockage. This aligns with the ecological the paper, which describes Mountain Plovers as birds that prefer relatively flat areas with bare ground and sparse vegetation.</p>
 </section>
 </section>
 <section id="problem-4.-affective-and-exploratory-visualizations" class="level1">
@@ -539,7 +539,7 @@ num (1): Steps Taken
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="final_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -589,7 +589,7 @@ Kruskal-Wallis chi-squared = 3.475, df = 2, p-value = 0.176</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="final_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
