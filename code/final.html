@@ -181,11 +181,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 5 × 3
   site_name    year mean_fronds
   &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 Carpinteria  2009        9.43
-2 Isla Vista   2016        7.74
-3 Isla Vista   2007       23.6 
+1 Naples       2009        5.44
+2 Naples       2018       17.7 
+3 Naples       2016        7.26
 4 Carpinteria  2010        3.53
-5 Carpinteria  2001        4.42</code></pre>
+5 Isla Vista   2002        3.47</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -488,6 +488,93 @@ model4  3 333.7410</code></pre>
 </section>
 <section id="b.-designing-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="b.-designing-analysis">b. Designing Analysis</h2>
+<p>Research question: Do energy levels differ across cloud cover conditions?</p>
+<p>I would use a Kruskal-Wallis test to answer this question. My response variable is energy level measured on a 1 to 5 scale, and my predictor variable is cloud cover grouped into the categories clear, cloudy, and rain. This analysis is appropriate because I am comparing energy across more than two categorical weather groups, and Kruskal-Wallis is the non-parametric test used for this type of comparison.</p>
+</section>
+<section id="c.-check-assumptions-and-run-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="c.-check-assumptions-and-run-analysis">c.&nbsp;Check Assumptions and Run Analysis</h2>
+<p>Because my response variable was energy level on a 1 to 5 scale and my predictor variable was cloud cover category, I used a non-parametric Kruskal-Wallis test instead of a parametric ANOVA. I first checked the number of observations in each recoded cloud cover group and looked at the underlying data with a jitter plot to make sure the categories were reasonable for comparison.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>daily_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"ENVSdsresearch.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 30 Columns: 8
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (2): Date, Cloud Cover
+dbl (5): Temperature (°F), Energy Level (1–5), Hours slept, caffiene (mg), A...
+num (1): Steps Taken
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>daily_clean <span class="ot">&lt;-</span> daily_data <span class="sc">|&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cloud_group =</span> <span class="fu">case_when</span>(</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>      cloud_cover <span class="sc">==</span> <span class="st">"mostly clear"</span> <span class="sc">~</span> <span class="st">"clear"</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>      cloud_cover <span class="sc">==</span> <span class="st">"partly cloudy"</span> <span class="sc">~</span> <span class="st">"cloudy"</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>      cloud_cover <span class="sc">==</span> <span class="st">"cloudy"</span> <span class="sc">~</span> <span class="st">"cloudy"</span>,</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>      cloud_cover <span class="sc">==</span> <span class="st">"cloudy/rain"</span> <span class="sc">~</span> <span class="st">"rain"</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cloud_group =</span> <span class="fu">as_factor</span>(cloud_group),</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">cloud_group =</span> <span class="fu">fct_relevel</span>(cloud_group, <span class="st">"clear"</span>, <span class="st">"cloudy"</span>, <span class="st">"rain"</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(cloud_group, energy_level_1_5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(daily_clean, cloud_group)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  cloud_group     n
+  &lt;fct&gt;       &lt;int&gt;
+1 clear          22
+2 cloudy          5
+3 rain            3</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(daily_clean, <span class="fu">aes</span>(<span class="at">x =</span> cloud_group, <span class="at">y =</span> energy_level_1_5, <span class="at">color =</span> cloud_group)) <span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">height =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Cloud cover condition"</span>,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Energy level (1–5)"</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kruskal.test</span>(energy_level_1_5 <span class="sc">~</span> cloud_group, <span class="at">data =</span> daily_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Kruskal-Wallis rank sum test
+
+data:  energy_level_1_5 by cloud_group
+Kruskal-Wallis chi-squared = 3.475, df = 2, p-value = 0.176</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>kruskal_result <span class="ot">&lt;-</span> <span class="fu">kruskal.test</span>(energy_level_1_5 <span class="sc">~</span> cloud_group, <span class="at">data =</span> daily_clean)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(daily_clean)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="fu">nlevels</span>(daily_clean<span class="sc">$</span>cloud_group)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>H <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(kruskal_result<span class="sc">$</span>statistic)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>eta_squared_H <span class="ot">&lt;-</span> (H <span class="sc">-</span> k <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">/</span> (n <span class="sc">-</span> k)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>eta_squared_H</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.05463112</code></pre>
+</div>
+</div>
+<p>I ran a Kruskal-Wallis test to compare energy levels across cloud cover conditions. I used the recoded categories clear, cloudy, and rain, where clear represented mostly clear days, cloudy combined partly cloudy and cloudy days, and rain represented cloudy/rain days. The test was not statistically significant, 𝜒 2 = 3.475 χ 2 =3.475, 𝑑 𝑓 = 2 df=2, 𝑝 = 0.176 p=0.176, which suggests there is not strong evidence that typical energy level differed across cloud cover groups in this sample. The effect size was small ( 𝜂 2 ≈ 0.055 η 2 ≈0.055), suggesting cloud cover explained only a small amount of the variation in energy levels.</p>
 </section>
 </section>
 

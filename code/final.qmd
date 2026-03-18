@@ -303,5 +303,87 @@ During week 9 workshop my group gave me the fantastic idea of visualizing my dat
 
 ## b. Designing Analysis
 
+Research question:
+Do energy levels differ across cloud cover conditions?
+
+I would use a Kruskal-Wallis test to answer this question. My response variable is energy level measured on a 1 to 5 scale, and my predictor variable is cloud cover grouped into the categories clear, cloudy, and rain. This analysis is appropriate because I am comparing energy across more than two categorical weather groups, and Kruskal-Wallis is the non-parametric test used for this type of comparison.
+
+## c. Check Assumptions and Run Analysis 
+Because my response variable was energy level on a 1 to 5 scale and my predictor variable was cloud cover category, I used a non-parametric Kruskal-Wallis test instead of a parametric ANOVA. I first checked the number of observations in each recoded cloud cover group and looked at the underlying data with a jitter plot to make sure the categories were reasonable for comparison.
+```{r}
+daily_data <- read_csv(here("data", "ENVSdsresearch.csv"))
+```
+
+```{r}
+daily_clean <- daily_data |>
+  clean_names() |>
+  mutate(
+    cloud_group = case_when(
+      cloud_cover == "mostly clear" ~ "clear",
+      cloud_cover == "partly cloudy" ~ "cloudy",
+      cloud_cover == "cloudy" ~ "cloudy",
+      cloud_cover == "cloudy/rain" ~ "rain"
+    ),
+    cloud_group = as_factor(cloud_group),
+    cloud_group = fct_relevel(cloud_group, "clear", "cloudy", "rain")
+  ) |>
+  select(cloud_group, energy_level_1_5)
+
+```
+
+```{r}
+count(daily_clean, cloud_group)
+```
+
+```{r}
+ggplot(daily_clean, aes(x = cloud_group, y = energy_level_1_5, color = cloud_group)) +
+  geom_jitter(width = 0.15, height = 0, size = 2, alpha = 0.7) +
+  labs(
+    x = "Cloud cover condition",
+    y = "Energy level (1–5)"
+  ) +
+  theme_classic()
+```
+
+```{r}
+kruskal.test(energy_level_1_5 ~ cloud_group, data = daily_clean)
+```
+
+```{r}
+kruskal_result <- kruskal.test(energy_level_1_5 ~ cloud_group, data = daily_clean)
+
+n <- nrow(daily_clean)
+k <- nlevels(daily_clean$cloud_group)
+H <- as.numeric(kruskal_result$statistic)
+
+eta_squared_H <- (H - k + 1) / (n - k)
+
+eta_squared_H
+```
+
+I ran a Kruskal-Wallis test to compare energy levels across cloud cover conditions. I used the recoded categories clear, cloudy, and rain, where clear represented mostly clear days, cloudy combined partly cloudy and cloudy days, and rain represented cloudy/rain days. The test was not statistically significant, 
+𝜒
+2
+=
+3.475
+χ
+2
+=3.475, 
+𝑑
+𝑓
+=
+2
+df=2, 
+𝑝
+=
+0.176
+p=0.176, which suggests there is not strong evidence that typical energy level differed across cloud cover groups in this sample. The effect size was small (
+𝜂
+2
+≈
+0.055
+η
+2
+≈0.055), suggesting cloud cover explained only a small amount of the variation in energy levels.
 
 
