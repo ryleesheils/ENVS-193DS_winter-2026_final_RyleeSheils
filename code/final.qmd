@@ -6,3 +6,13 @@ author: Rylee sheils
 
 GitHub repository: [ENVS-193DS_winter-2026_final](https://github.com/ryleesheils/ENVS-193DS_winter-2026_final)
 
+# Set Up 
+```{r}
+#| label: Set Up 
+#| message: false
+#| warning: false
+library(tidyverse)
+library(janitor)
+library(forcats)
+```
+
