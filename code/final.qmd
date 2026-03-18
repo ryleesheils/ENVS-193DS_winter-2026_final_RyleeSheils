@@ -35,3 +35,49 @@ One additional variable that could influence flooded wetland area is median dail
 # Problem 2. Data Visualization 
 
 ## a. Cleaning and Summarizing 
+
+```{r}
+kelp <- read_csv("data/kelp_data.csv")
+```
+
+```{r}
+kelp_clean <- kelp |>
+  clean_names() |>
+  # cleans the column names
+  
+  filter(site %in% c("IVEE", "NAPL", "CARP")) |>
+  # keeps only the three sites of interest
+  
+  mutate(site_name = case_when(
+    site == "NAPL" ~ "Naples",
+    site == "IVEE" ~ "Isla Vista",
+    site == "CARP" ~ "Carpinteria"
+  )) |>
+  # creates a new column with full site names
+  
+  mutate(site_name = as_factor(site_name),
+         site_name = fct_relevel(site_name, "Naples", "Isla Vista", "Carpinteria")) |>
+  # makes site_name a factor and sets the order
+  
+  filter(!(date == "2000-09-22" & transect == "6" & quad == "40")) |>
+  # removes the flagged incorrect observation
+  
+  group_by(site_name, year) |>
+  # groups the data by site and year
+  
+  summarize(mean_fronds = mean(fronds)) |>
+  # calculates the mean fronds for each site-year combination
+  
+  ungroup()
+  # removes grouping
+```
+
+```{r}
+slice_sample(kelp_clean, n = 5)
+```
+
+```{r}
+str(kelp_clean)
+```
+
+
