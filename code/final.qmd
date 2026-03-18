@@ -1,5 +1,8 @@
 ---
-title: "final"
+title: "Final"
 format: html
+author: Rylee sheils 
 ---
+
+GitHub repository: [ENVS-193DS_winter-2026_final](https://github.com/ryleesheils/ENVS-193DS_winter-2026_final)
 
