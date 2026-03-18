@@ -118,3 +118,17 @@ ggplot(kelp_clean, aes(x = year, y = mean_fronds, color = site_name)) +
 ## d. 
 The figure shows that mean kelp fronds vary across both year and site. Isla Vista tends to have the highest values and the biggest changes over time, while Naples and Carpinteria are usually lower. Overall, the plot suggests that kelp abundance is not constant and differs depending on location and year.
 
+# Problem 3. Data Analysis
+
+## Set up 
+```{r}
+mopl <- read_csv(here("data", "MOPL_nest-site_selection_Duchardt_et_al._2019.csv"))
+```
+
+## a. Response Varirables 
+In this data set, a value of 1 means the location was a nest site that was used by a Mountain Plover, and a value of 0 means the location was an available site that was not used for nesting. Biologically, the response variable represents nest-site use, or whether a Mountain Plover selected that location for nesting.
+
+## b. 
+`vo_nest` is a continuous variable because it is measured numerically. As visual obstruction increases, the probability of Mountain Plover nest-site use would probably decrease because plovers tend to choose open nesting habitat with shorter and less dense vegetation. I found this in the Introduction where the paper says Mountain Plovers typically breed in areas with extensive bare ground and short, sparse vegetation, and in the Nest-Site Selection methods where visual obstruction was included as a habitat variable.
+
+`edgedist` is a continuous variable because it measures distance to the prairie dog colony edge. As distance to colony edge increases, the probability of nest-site use would probably decrease because the paper suggests plovers are more likely to use areas closer to colony edges than deep colony cores. I found this in the Discussion where the authors say probability of site use declined near the cores of large colonies and that distance to colony edge was a strong driver of plover presence. 

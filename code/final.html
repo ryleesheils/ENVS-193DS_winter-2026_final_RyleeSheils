@@ -180,11 +180,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 5 × 3
   site_name    year mean_fronds
   &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 Naples       2004        7.81
-2 Carpinteria  2025       12.9 
-3 Carpinteria  2013        2.93
-4 Isla Vista   2013        9.36
-5 Naples       2021       10.5 </code></pre>
+1 Isla Vista   2006       11.6 
+2 Isla Vista   2005       18.9 
+3 Naples       2007       17.2 
+4 Isla Vista   2008       39.4 
+5 Carpinteria  2001        4.42</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -239,6 +239,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="d." class="level2">
 <h2 class="anchored" data-anchor-id="d.">d.&nbsp;</h2>
 <p>The figure shows that mean kelp fronds vary across both year and site. Isla Vista tends to have the highest values and the biggest changes over time, while Naples and Carpinteria are usually lower. Overall, the plot suggests that kelp abundance is not constant and differs depending on location and year.</p>
+</section>
+</section>
+<section id="problem-3.-data-analysis" class="level1">
+<h1>Problem 3. Data Analysis</h1>
+<section id="set-up-1" class="level2">
+<h2 class="anchored" data-anchor-id="set-up-1">Set up</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mopl <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"MOPL_nest-site_selection_Duchardt_et_al._2019.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 276 Columns: 34
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (2): ID, name
+dbl (32): year, bare1, bare2, br1, br2, af1, af2, pf1, pf2, c3p1, c3p2, c4p1...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+</section>
+<section id="a.-response-varirables" class="level2">
+<h2 class="anchored" data-anchor-id="a.-response-varirables">a. Response Varirables</h2>
+<p>In this data set, a value of 1 means the location was a nest site that was used by a Mountain Plover, and a value of 0 means the location was an available site that was not used for nesting. Biologically, the response variable represents nest-site use, or whether a Mountain Plover selected that location for nesting.</p>
+</section>
+<section id="b." class="level2">
+<h2 class="anchored" data-anchor-id="b.">b.</h2>
+<p><code>vo_nest</code> is a continuous variable because it is measured numerically. As visual obstruction increases, the probability of Mountain Plover nest-site use would probably decrease because plovers tend to choose open nesting habitat with shorter and less dense vegetation. I found this in the Introduction where the paper says Mountain Plovers typically breed in areas with extensive bare ground and short, sparse vegetation, and in the Nest-Site Selection methods where visual obstruction was included as a habitat variable.</p>
+<p><code>edgedist</code> is a continuous variable because it measures distance to the prairie dog colony edge. As distance to colony edge increases, the probability of nest-site use would probably decrease because the paper suggests plovers are more likely to use areas closer to colony edges than deep colony cores. I found this in the Discussion where the authors say probability of site use declined near the cores of large colonies and that distance to colony edge was a strong driver of plover presence.</p>
 </section>
 </section>
 
