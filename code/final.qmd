@@ -8,7 +8,7 @@ GitHub repository: [ENVS-193DS_winter-2026_final](https://github.com/ryleesheils
 
 # Set Up 
 ```{r}
-#| label: Set Up 
+#| label: Set Up
 #| message: false
 #| warning: false
 library(tidyverse)
@@ -25,7 +25,7 @@ library(DHARMa)
 In part 1, they used a simple linear regression because they tested whether precipitation predicts flooded wetland area. In part 2, they used a Kruskal–Wallis rank-sum test because they tested whether median flooded wetland area differs across five water year classification groups.
 
 ## b. Figure Needed
-A good figure for part 2 would be a box plot with water year classification on the x-axis and flooded wetland area on the y-axis. I think this would be the best choice because it makes it easy to compare the median flooded wetland area across all five groups and also shows how spread out the data are in each one. I would also add the individual data points so it is easier to see the variation and overlap between groups.
+A good figure for part 2 would be a box plot with water year classification on the x-axis and flooded wetland area on the y-axis. I think this would be the best choice because it makes it easy to compare the median flooded wetland area across the five groups and also shows how spread out the data are in each one. I would also add the individual data points so it is easier to see the variation and overlap between groups.
 
 ## c. Suggestions for Rewriting 
 Precipitation did not significantly predict flooded wetland area in the San Joaquin River Delta. This result was based on a simple linear regression (test statistic = not provided, distribution = not provided, degrees of freedom = not provided, p = 0.11, α = significance level not provided).
@@ -33,58 +33,53 @@ Precipitation did not significantly predict flooded wetland area in the San Joaq
 Median flooded wetland area also did not differ significantly across water year classifications. This result was based on a Kruskal-Wallis rank-sum test comparing wet, above normal, below normal, dry, and critical drought years (test statistic = not provided, distribution = chi-squared, degrees of freedom = 4, p = 0.12, α = significance level not provided).
 
 ## d. Interpretation
-One additional variable that could influence flooded wetland area is median daily Delta outflow during the spring management period. This would be a continuous variable, and it could affect flooded wetland area because the paper found flooded wetland area was weakly correlated with Delta outflow during a key time for wetland water management.
+One additional variable that could influence flooded wetland area is median daily outflow during the spring management period. This would be a continuous variable, and it could affect flooded wetland area as the paper found flooded wetland area was weakly correlated with Delta outflow during a key time for wetland water management.
 
 # Problem 2. Data Visualization 
 
 ## a. Cleaning and Summarizing 
 
+Read in Kelp Data
 ```{r}
+#| label: Read in Kelp Data
 #| message: false
 #| warning: false
-kelp <- read_csv(here("data", "kelp_data.csv"))
+kelp <- read_csv(here("data", "kelp_data.csv")) #Read in Kelp data and make data frame called kelp
 ```
 
 ```{r}
 #| message: false
 #| warning: false
-kelp_clean <- kelp |>
-  clean_names() |>
-  # cleans the column names
+kelp_clean <- kelp |> # make new data frame called data clean 
+  clean_names() |> # cleans the column names
   
-  filter(site %in% c("IVEE", "NAPL", "CARP")) |>
-  # keeps only the three sites of interest
+  filter(site %in% c("IVEE", "NAPL", "CARP")) |> # keeps only the three sites of interest
   
   mutate(site_name = case_when(
-    site == "NAPL" ~ "Naples",
-    site == "IVEE" ~ "Isla Vista",
-    site == "CARP" ~ "Carpinteria"
-  )) |>
-  # creates a new column with full site names
+    site == "NAPL" ~ "Naples", # when code say NAPL change to naples
+    site == "IVEE" ~ "Isla Vista", #when code says IVEE change to Isla Vista 
+    site == "CARP" ~ "Carpinteria" # when code say CARP change to Carpenteria 
+  )) |> # creates a new column with full site names
   
-  mutate(site_name = as_factor(site_name),
-         site_name = fct_relevel(site_name, "Naples", "Isla Vista", "Carpinteria")) |>
-  # makes site_name a factor and sets the order
+  mutate(site_name = as_factor(site_name), #change the site names 
+         site_name = fct_relevel(site_name, "Naples", "Isla Vista", "Carpinteria")) |>  # makes site_name a factor and sets the order
   
-  filter(!(date == "2000-09-22" & transect == "6" & quad == "40")) |>
+  filter(!(date == "2000-09-22" & transect == "6" & quad == "40")) |> #filter data 
   # removes the flagged incorrect observation
   
-  group_by(site_name, year) |>
-  # groups the data by site and year
+  group_by(site_name, year) |># groups the data by site and year
   
-  summarize(mean_fronds = mean(fronds)) |>
-  # calculates the mean fronds for each site-year combination
+  summarize(mean_fronds = mean(fronds)) |> # calculates the mean for each site-year combination
   
-  ungroup()
-  # removes grouping
+  ungroup() # removes groups
 ```
 
 ```{r}
-slice_sample(kelp_clean, n = 5)
+slice_sample(kelp_clean, n = 5) #show sample of clean data
 ```
 
 ```{r}
-str(kelp_clean)
+str(kelp_clean) #show str 
 ```
 
 ## b. Understanding the Data 

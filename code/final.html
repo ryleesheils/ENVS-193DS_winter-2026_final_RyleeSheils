@@ -125,7 +125,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="b.-figure-needed" class="level2">
 <h2 class="anchored" data-anchor-id="b.-figure-needed">b. Figure Needed</h2>
-<p>A good figure for part 2 would be a box plot with water year classification on the x-axis and flooded wetland area on the y-axis. I think this would be the best choice because it makes it easy to compare the median flooded wetland area across all five groups and also shows how spread out the data are in each one. I would also add the individual data points so it is easier to see the variation and overlap between groups.</p>
+<p>A good figure for part 2 would be a box plot with water year classification on the x-axis and flooded wetland area on the y-axis. I think this would be the best choice because it makes it easy to compare the median flooded wetland area across the five groups and also shows how spread out the data are in each one. I would also add the individual data points so it is easier to see the variation and overlap between groups.</p>
 </section>
 <section id="c.-suggestions-for-rewriting" class="level2">
 <h2 class="anchored" data-anchor-id="c.-suggestions-for-rewriting">c.&nbsp;Suggestions for Rewriting</h2>
@@ -134,62 +134,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="d.-interpretation" class="level2">
 <h2 class="anchored" data-anchor-id="d.-interpretation">d.&nbsp;Interpretation</h2>
-<p>One additional variable that could influence flooded wetland area is median daily Delta outflow during the spring management period. This would be a continuous variable, and it could affect flooded wetland area because the paper found flooded wetland area was weakly correlated with Delta outflow during a key time for wetland water management.</p>
+<p>One additional variable that could influence flooded wetland area is median daily outflow during the spring management period. This would be a continuous variable, and it could affect flooded wetland area as the paper found flooded wetland area was weakly correlated with Delta outflow during a key time for wetland water management.</p>
 </section>
 </section>
 <section id="problem-2.-data-visualization" class="level1">
 <h1>Problem 2. Data Visualization</h1>
 <section id="a.-cleaning-and-summarizing" class="level2">
 <h2 class="anchored" data-anchor-id="a.-cleaning-and-summarizing">a. Cleaning and Summarizing</h2>
+<p>Read in Kelp Data</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>kelp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"kelp_data.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>kelp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"kelp_data.csv"</span>)) <span class="co">#Read in Kelp data and make data frame called kelp</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>kelp_clean <span class="ot">&lt;-</span> kelp <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># cleans the column names</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(site <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"IVEE"</span>, <span class="st">"NAPL"</span>, <span class="st">"CARP"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># keeps only the three sites of interest</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site_name =</span> <span class="fu">case_when</span>(</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    site <span class="sc">==</span> <span class="st">"NAPL"</span> <span class="sc">~</span> <span class="st">"Naples"</span>,</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    site <span class="sc">==</span> <span class="st">"IVEE"</span> <span class="sc">~</span> <span class="st">"Isla Vista"</span>,</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    site <span class="sc">==</span> <span class="st">"CARP"</span> <span class="sc">~</span> <span class="st">"Carpinteria"</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># creates a new column with full site names</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>kelp_clean <span class="ot">&lt;-</span> kelp <span class="sc">|&gt;</span> <span class="co"># make new data frame called data clean </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> <span class="co"># cleans the column names</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(site <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"IVEE"</span>, <span class="st">"NAPL"</span>, <span class="st">"CARP"</span>)) <span class="sc">|&gt;</span> <span class="co"># keeps only the three sites of interest</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site_name =</span> <span class="fu">case_when</span>(</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    site <span class="sc">==</span> <span class="st">"NAPL"</span> <span class="sc">~</span> <span class="st">"Naples"</span>, <span class="co"># when code say NAPL change to naples</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    site <span class="sc">==</span> <span class="st">"IVEE"</span> <span class="sc">~</span> <span class="st">"Isla Vista"</span>, <span class="co">#when code says IVEE change to Isla Vista </span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    site <span class="sc">==</span> <span class="st">"CARP"</span> <span class="sc">~</span> <span class="st">"Carpinteria"</span> <span class="co"># when code say CARP change to Carpenteria </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span> <span class="co"># creates a new column with full site names</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site_name =</span> <span class="fu">as_factor</span>(site_name), <span class="co">#change the site names </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">site_name =</span> <span class="fu">fct_relevel</span>(site_name, <span class="st">"Naples"</span>, <span class="st">"Isla Vista"</span>, <span class="st">"Carpinteria"</span>)) <span class="sc">|&gt;</span>  <span class="co"># makes site_name a factor and sets the order</span></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site_name =</span> <span class="fu">as_factor</span>(site_name),</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">site_name =</span> <span class="fu">fct_relevel</span>(site_name, <span class="st">"Naples"</span>, <span class="st">"Isla Vista"</span>, <span class="st">"Carpinteria"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># makes site_name a factor and sets the order</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(date <span class="sc">==</span> <span class="st">"2000-09-22"</span> <span class="sc">&amp;</span> transect <span class="sc">==</span> <span class="st">"6"</span> <span class="sc">&amp;</span> quad <span class="sc">==</span> <span class="st">"40"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># removes the flagged incorrect observation</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(date <span class="sc">==</span> <span class="st">"2000-09-22"</span> <span class="sc">&amp;</span> transect <span class="sc">==</span> <span class="st">"6"</span> <span class="sc">&amp;</span> quad <span class="sc">==</span> <span class="st">"40"</span>)) <span class="sc">|&gt;</span> <span class="co">#filter data </span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># removes the flagged incorrect observation</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site_name, year) <span class="sc">|&gt;</span><span class="co"># groups the data by site and year</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_fronds =</span> <span class="fu">mean</span>(fronds)) <span class="sc">|&gt;</span> <span class="co"># calculates the mean for each site-year combination</span></span>
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site_name, year) <span class="sc">|&gt;</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># groups the data by site and year</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_fronds =</span> <span class="fu">mean</span>(fronds)) <span class="sc">|&gt;</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculates the mean fronds for each site-year combination</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># removes grouping</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="co"># removes groups</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">slice_sample</span>(kelp_clean, <span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">slice_sample</span>(kelp_clean, <span class="at">n =</span> <span class="dv">5</span>) <span class="co">#show sample of clean data</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 3
   site_name    year mean_fronds
   &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 Carpinteria  2018        4.21
-2 Carpinteria  2023        4.50
-3 Naples       2022        7.99
-4 Naples       2012       10.5 
-5 Naples       2017        4.74</code></pre>
+1 Naples       2021       10.5 
+2 Naples       2013        9.20
+3 Naples       2025        8.44
+4 Carpinteria  2003        5.27
+5 Naples       2006        5.11</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(kelp_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(kelp_clean) <span class="co">#show str </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>tibble [77 × 3] (S3: tbl_df/tbl/data.frame)
  $ site_name  : Factor w/ 3 levels "Naples","Isla Vista",..: 1 1 1 1 1 1 1 1 1 1 ...
@@ -231,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="final_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -371,7 +365,7 @@ model4  3 333.7410</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="final_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -435,7 +429,7 @@ model4  3 333.7410</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="final_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -545,7 +539,7 @@ num (1): Steps Taken
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="final_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -595,7 +589,7 @@ Kruskal-Wallis chi-squared = 3.475, df = 2, p-value = 0.176</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="final_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
