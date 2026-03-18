@@ -386,4 +386,33 @@ p=0.176, which suggests there is not strong evidence that typical energy level d
 2
 ≈0.055), suggesting cloud cover explained only a small amount of the variation in energy levels.
 
+## d. Create Visualization 
+
+```{r}
+ggplot(daily_clean, aes(x = cloud_group, y = energy_level_1_5, color = cloud_group)) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.2, width = 0.5) +
+  geom_jitter(width = 0.15, height = 0, size = 2.4, alpha = 0.8) +
+  scale_color_manual(values = c(
+    "clear" = "#F2C94C",
+    "cloudy" = "#56B4E9",
+    "rain" = "#8E63CE"
+  )) +
+  labs(
+    x = "Cloud cover condition",
+    y = "Energy level (1–5)"
+  ) +
+  theme_classic()
+```
+To reflect the Kruskal-Wallis analysis, I created a boxplot with jittered points showing energy level across recoded cloud cover groups. This visualization makes it easier to compare the spread and typical values of energy across the weather categories while still showing the underlying observations.
+
+## e. Write a Caption 
+Figure 2. Energy levels across recoded cloud cover conditions. Points show individual daily observations of energy level on a 1 to 5 scale, while boxplots summarize the distribution of energy within the clear, cloudy, and rain groups. Colors were chosen to match the weather categories used in the affective flower visualization.
+
+## f. write about your results 
+The visualization and Kruskal-Wallis test both suggest that cloud cover may relate to energy level, but the evidence was not strong enough in this sample to conclude that energy differed significantly across the cloud cover groups. The effect size was small, which suggests cloud cover explained only a small amount of the variation in my energy. This fits with my affective visualization, which shows that energy is likely shaped by several daily factors at once rather than weather alone.
+
+## g. Week 10 Attendance 
+I was there! 
+
+
 

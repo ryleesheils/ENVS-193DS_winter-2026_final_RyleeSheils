@@ -181,11 +181,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 5 × 3
   site_name    year mean_fronds
   &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 Naples       2009        5.44
-2 Naples       2018       17.7 
-3 Naples       2016        7.26
-4 Carpinteria  2010        3.53
-5 Isla Vista   2002        3.47</code></pre>
+1 Carpinteria  2018        4.21
+2 Carpinteria  2023        4.50
+3 Naples       2022        7.99
+4 Naples       2012       10.5 
+5 Naples       2017        4.74</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -575,6 +575,44 @@ Kruskal-Wallis chi-squared = 3.475, df = 2, p-value = 0.176</code></pre>
 </div>
 </div>
 <p>I ran a Kruskal-Wallis test to compare energy levels across cloud cover conditions. I used the recoded categories clear, cloudy, and rain, where clear represented mostly clear days, cloudy combined partly cloudy and cloudy days, and rain represented cloudy/rain days. The test was not statistically significant, 𝜒 2 = 3.475 χ 2 =3.475, 𝑑 𝑓 = 2 df=2, 𝑝 = 0.176 p=0.176, which suggests there is not strong evidence that typical energy level differed across cloud cover groups in this sample. The effect size was small ( 𝜂 2 ≈ 0.055 η 2 ≈0.055), suggesting cloud cover explained only a small amount of the variation in energy levels.</p>
+</section>
+<section id="d.-create-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="d.-create-visualization">d.&nbsp;Create Visualization</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(daily_clean, <span class="fu">aes</span>(<span class="at">x =</span> cloud_group, <span class="at">y =</span> energy_level_1_5, <span class="at">color =</span> cloud_group)) <span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">width =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">height =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="fl">2.4</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"clear"</span> <span class="ot">=</span> <span class="st">"#F2C94C"</span>,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cloudy"</span> <span class="ot">=</span> <span class="st">"#56B4E9"</span>,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rain"</span> <span class="ot">=</span> <span class="st">"#8E63CE"</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Cloud cover condition"</span>,</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Energy level (1–5)"</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To reflect the Kruskal-Wallis analysis, I created a boxplot with jittered points showing energy level across recoded cloud cover groups. This visualization makes it easier to compare the spread and typical values of energy across the weather categories while still showing the underlying observations.</p>
+</section>
+<section id="e.-write-a-caption" class="level2">
+<h2 class="anchored" data-anchor-id="e.-write-a-caption">e. Write a Caption</h2>
+<p>Figure 2. Energy levels across recoded cloud cover conditions. Points show individual daily observations of energy level on a 1 to 5 scale, while boxplots summarize the distribution of energy within the clear, cloudy, and rain groups. Colors were chosen to match the weather categories used in the affective flower visualization.</p>
+</section>
+<section id="f.-write-about-your-results" class="level2">
+<h2 class="anchored" data-anchor-id="f.-write-about-your-results">f.&nbsp;write about your results</h2>
+<p>The visualization and Kruskal-Wallis test both suggest that cloud cover may relate to energy level, but the evidence was not strong enough in this sample to conclude that energy differed significantly across the cloud cover groups. The effect size was small, which suggests cloud cover explained only a small amount of the variation in my energy. This fits with my affective visualization, which shows that energy is likely shaped by several daily factors at once rather than weather alone.</p>
+</section>
+<section id="g.-week-10-attendance" class="level2">
+<h2 class="anchored" data-anchor-id="g.-week-10-attendance">g. Week 10 Attendance</h2>
+<p>I was there!</p>
 </section>
 </section>
 
